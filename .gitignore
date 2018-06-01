@@ -1,3 +1,4 @@
+build
 *.vcxproj
 App/App.vcxproj.user
 *.filters
