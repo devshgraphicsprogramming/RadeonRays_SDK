@@ -10,7 +10,11 @@ def printfile(filename, dir):
         a = line.strip('\r\n')
         inl = re.search("#include\s*<.*/(.+)>", a)
         if inl:
-            printfile( inl.group(1), dir)
+            a = a.replace("#include", "", 1)
+            a = a.strip()
+            a = a.strip('<>')
+            a = a.replace( inl.group(1), "" )
+            printfile( inl.group(1), a)
         else:
             print( '"' + a.replace("\\","\\\\").replace("\"", "\\\"") + ' \\n"\\' )
 
