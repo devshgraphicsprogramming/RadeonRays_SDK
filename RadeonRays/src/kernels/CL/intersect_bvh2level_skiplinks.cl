@@ -50,7 +50,7 @@ THE SOFTWARE.
 /*************************************************************************
 INCLUDES
 **************************************************************************/
-#include <../RadeonRays/src/kernels/CL/common.cl>
+#include <common.cl>
 
 /*************************************************************************
 EXTENSIONS
@@ -320,7 +320,7 @@ KERNEL void occluded_main(
     // Number of rays in ray buffer
     GLOBAL int const* restrict num_rays,
     // Hits 
-    GLOBAL int* hits
+    GLOBAL Occlusion* hits
 )
 {
     int global_id = get_global_id(0);
@@ -374,7 +374,8 @@ KERNEL void occluded_main(
                             // If hit update closest hit distance and index
                             if (f < t_max)
                             {
-                                hits[global_id] = HIT_MARKER;
+                                hits[global_id].shape_id = face.shape_id;
+                                hits[global_id].prim_id = face.prim_id;
                                 return;
                             }
 
@@ -443,7 +444,8 @@ KERNEL void occluded_main(
                 }
             }
 
-            hits[global_id] = MISS_MARKER;
+            hits[global_id].shape_id = MISS_MARKER;
+            hits[global_id].prim_id = MISS_MARKER;
         }
     }
 }

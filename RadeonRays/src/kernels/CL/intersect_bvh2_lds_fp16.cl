@@ -25,7 +25,7 @@ THE SOFTWARE.
 /*************************************************************************
 INCLUDES
 **************************************************************************/
-#include <../RadeonRays/src/kernels/CL/common.cl>
+#include <common.cl>
 
 /*************************************************************************
 TYPE DEFINITIONS
@@ -317,7 +317,7 @@ KERNEL void occluded_main(
     // Stack memory
     GLOBAL uint *stack,
     // Hit results: 1 for hit and -1 for miss
-    GLOBAL int *hits)
+    GLOBAL Occlusion *hits)
 {
     __local uint lds_stack[GROUP_SIZE * LDS_STACK_SIZE];
 
@@ -436,7 +436,8 @@ KERNEL void occluded_main(
 
                     if (t < closest_t)
                     {
-                        hits[index] = HIT_MARKER;
+                        hits[index].prim_id = node.aabb23_min_or_v2_and_addr2_or_prim_id.w;
+                        hits[index].shape_id = node.aabb01_max_or_v1_and_addr1_or_mesh_id.w;
                         return;
                     }
                 }
@@ -457,7 +458,8 @@ KERNEL void occluded_main(
             }
 
             // Finished traversal, but no intersection found
-            hits[index] = MISS_MARKER;
+            hits[index].shape_id = MISS_MARKER;
+            hits[index].prim_id = MISS_MARKER;
         }
     }
 }

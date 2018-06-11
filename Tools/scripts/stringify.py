@@ -8,13 +8,12 @@ def printfile(filename, dir):
     fh = open(dir + "/" + filename)
     for line in fh.readlines():
         a = line.strip('\r\n')
-        inl = re.search("#include\s*<.*/(.+)>", a)
+        inl = re.search("#include\s*<(.+)>", a)
         if inl:
-            a = a.replace("#include", "", 1)
-            a = a.strip()
-            a = a.strip('<>')
-            a = a.replace( inl.group(1), "" )
-            printfile( inl.group(1), a)
+            a = inl.group(1)
+            fn = a.split('/')[-1]
+            a = a.replace( fn, "" )
+            printfile( fn, dir + "/" + a)
         else:
             print( '"' + a.replace("\\","\\\\").replace("\"", "\\\"") + ' \\n"\\' )
 

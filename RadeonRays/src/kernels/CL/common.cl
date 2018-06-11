@@ -68,6 +68,11 @@ typedef struct
     float4 uvwt;
 } Intersection;
 
+typedef struct
+{
+    int shape_id;
+    int prim_id;
+} Occlusion;
 
 /*************************************************************************
 HELPER FUNCTIONS

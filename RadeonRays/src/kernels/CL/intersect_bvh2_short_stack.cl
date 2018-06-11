@@ -82,7 +82,7 @@ THE SOFTWARE.
 /*************************************************************************
 INCLUDES
 **************************************************************************/
-#include <../RadeonRays/src/kernels/CL/common.cl>
+#include <common.cl>
 
 
 /*************************************************************************
@@ -139,7 +139,7 @@ occluded_main(
     // Stack memory
     GLOBAL int* stack,
     // Hit results: 1 for hit and -1 for miss
-    GLOBAL int* hits
+    GLOBAL Occlusion* hits
     )
 {
     // Allocate stack in LDS
@@ -197,7 +197,8 @@ occluded_main(
                     // If hit update closest hit distance and index
                     if (f < t_max)
                     {
-                        hits[global_id] = HIT_MARKER;
+                        hits[global_id].shape_id = node.shape_id;
+                        hits[global_id].prim_id = node.prim_id;
                         return;
                     }
                 }
@@ -275,7 +276,8 @@ occluded_main(
             }
 
             // Finished traversal, but no intersection found
-            hits[global_id] = MISS_MARKER;
+            hits[global_id].shape_id = MISS_MARKER;
+            hits[global_id].prim_id = MISS_MARKER;
         }
     }
 }

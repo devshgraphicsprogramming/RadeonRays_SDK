@@ -89,7 +89,7 @@ THE SOFTWARE.
 /*************************************************************************
 INCLUDES
 **************************************************************************/
-#include <../RadeonRays/src/kernels/CL/common.cl>
+#include <common.cl>
 
 
 /*************************************************************************
@@ -147,7 +147,7 @@ occluded_main(
     // Displacement table size
     int const displacement_table_size,
     // Hit results: 1 for hit and -1 for miss
-    GLOBAL int* hits
+    GLOBAL Occlusion* hits
     )
 {
     int global_id = get_global_id(0);
@@ -193,7 +193,8 @@ occluded_main(
                     // If hit store the result and bail out
                     if (f < t_max)
                     {
-                        hits[global_id] = HIT_MARKER;
+                        hits[global_id].shape_id = face.shape_id;
+                        hits[global_id].prim_id = face.prim_id;
                         return;
                     }
                 }
@@ -267,7 +268,8 @@ occluded_main(
             }
 
             // Finished traversal, but no intersection found
-            hits[global_id] = MISS_MARKER;
+            hits[global_id].shape_id = MISS_MARKER;
+            hits[global_id].prim_id = MISS_MARKER;
         }
     }
 }
