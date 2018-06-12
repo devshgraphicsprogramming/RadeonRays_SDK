@@ -53,12 +53,12 @@ CLWImage2D CLWImage2D::Create(cl_context context, cl_image_format const* imgForm
 }
 
 
-CLWImage2D CLWImage2D::CreateFromGLTexture(cl_context context, cl_GLint texture)
+CLWImage2D CLWImage2D::CreateFromGLTexture(cl_context context, cl_GLint texture, cl_mem_flags flags)
 {
     cl_int status = CL_SUCCESS;
 
     // TODO: handle that gracefully: GL_TEXTURE_2D
-    cl_mem deviceImg = clCreateFromGLTexture(context, CL_MEM_WRITE_ONLY, 0x0DE1, 0, texture, &status);
+    cl_mem deviceImg = clCreateFromGLTexture(context, flags, 0x0DE1, 0, texture, &status);
     
     ThrowIf(status != CL_SUCCESS, status, "clCreateFromGLTexture failed");
     
@@ -66,6 +66,20 @@ CLWImage2D CLWImage2D::CreateFromGLTexture(cl_context context, cl_GLint texture)
     
     clReleaseMemObject(deviceImg);
     
+    return image;
+}
+
+CLWImage2D CLWImage2D::CreateFromGLRenderbuffer(cl_context context, cl_GLint buffer, cl_mem_flags flags) {
+    cl_int status = CL_SUCCESS;
+
+    cl_mem deviceImg = clCreateFromGLRenderbuffer(context, flags, buffer, &status);
+
+    ThrowIf(status != CL_SUCCESS, status, "clCreateFromGLRenderbuffer failed");
+
+    CLWImage2D image(deviceImg);
+
+    clReleaseMemObject(deviceImg);
+
     return image;
 }
 
