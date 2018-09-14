@@ -1,4 +1,4 @@
-*.vcxproj
+.vs/
 App/App.vcxproj.user
 *.filters
 *.obj
@@ -18,7 +18,6 @@ Bin/Release/x64/App64.exe
 *.exe
 *.opendb
 *.db
-*.sln
 *.d
 
 *.o
@@ -26,6 +25,12 @@ Bin/Release/x64/App64.exe
 *.a
 
 *.so
+
+*.cmake
+CMakeFiles/
+CMakeCache/
+
+packages/
 
 App/Makefile
 

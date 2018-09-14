@@ -1,35 +1,17 @@
-/**********************************************************************
-Copyright (c) 2016 Advanced Micro Devices, Inc. All rights reserved.
+#include <GL/glew.h>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-********************************************************************/
 #include "radeon_rays.h"
 #include "radeon_rays_cl.h"
 #include "CLW.h"
 
-#include <GL/glew.h>
-#include <GLUT/GLUT.h>
+#include <GL/glut.h>
 #include <cassert>
 #include <iostream>
 #include <memory>
+#include <random>
 #include "../Tools/shader_manager.h"
 #include "../Tools/tiny_obj_loader.h"
+#include "hdr.h"
 
 using namespace RadeonRays;
 using namespace tinyobj;
@@ -39,8 +21,8 @@ namespace {
     std::vector<material_t> g_objmaterials;
     GLuint g_vertex_buffer, g_index_buffer;
     GLuint g_texture;
-    int g_window_width = 640;
-    int g_window_height = 480;
+    int g_window_width = 1024;
+    int g_window_height = 1024;
     std::unique_ptr<ShaderManager> g_shader_manager;
     
     IntersectionApi* g_api;
@@ -67,11 +49,24 @@ namespace {
     };
 }
 
+cl_device_id id;
+cl_command_queue queue;
+
+void* MapCLWBuffer(ReferenceCounter<cl_mem, clRetainMemObject, clReleaseMemObject> buf, int sz) {
+	return clEnqueueMapBuffer(queue, (cl_mem)buf, true, CL_MAP_READ, 0, sz, 0, NULL, NULL, NULL);
+}
+
+void UnmapCLWBuffer(ReferenceCounter<cl_mem, clRetainMemObject, clReleaseMemObject> buf, void* ptr) {
+	clEnqueueUnmapMemObject(queue, (cl_mem)buf, ptr, 0, NULL, NULL);
+}
+
+CLWBuffer<float> bg_buf;
+
 void InitData()
 {
     //Load
     std::string basepath = "../../Resources/CornellBox/"; 
-    std::string filename = basepath + "orig.objm";
+    std::string filename = basepath + "sharo.obj";
     std::string res = LoadObj(g_objshapes, g_objmaterials, filename.c_str(), basepath.c_str());
     if (res != "")
     {
@@ -101,16 +96,18 @@ void InitData()
         }
         
         // add additional emty data to simplify indentation in arrays
-        if (mesh.positions.size() / 3 < mesh.indices.size())
-        {
-            int count = mesh.indices.size() - mesh.positions.size() / 3;
-            for (int i = 0; i < count; ++i)
-            {
-                verts.push_back(0.f); normals.push_back(0.f);
-                verts.push_back(0.f); normals.push_back(0.f);
-                verts.push_back(0.f); normals.push_back(0.f);
-            }
-        }
+        //if (mesh.positions.size() / 3 < mesh.indices.size())
+        //{
+        //    int count = mesh.indices.size() - mesh.positions.size() / 3;
+        //    for (int i = 0; i < count; ++i)
+        //    {
+        //        verts.push_back(0.f); normals.push_back(0.f);
+        //        verts.push_back(0.f); normals.push_back(0.f);
+        //        verts.push_back(0.f); normals.push_back(0.f);
+        //    }
+        //}
+		verts.resize(mesh.indices.size() * 3, 0.0f);
+		normals.resize(mesh.indices.size() * 3, 0.0f);
 
         indents.push_back(indent);
         indent += mesh.indices.size();
@@ -120,15 +117,21 @@ void InitData()
     g_indices = CLWBuffer<int>::Create(g_context, CL_MEM_READ_ONLY, inds.size(), inds.data());
     g_colors = CLWBuffer<float>::Create(g_context, CL_MEM_READ_ONLY, colors.size(), colors.data());
     g_indent = CLWBuffer<int>::Create(g_context, CL_MEM_READ_ONLY, indents.size(), indents.data());
+
+	unsigned int _w, _h;
+	auto d = hdr::read_hdr("refl.hdr", &_w, &_h);
+	float* dv = new float[_w*_h * 3];
+	hdr::to_float(d, _w, _h, dv);
+	bg_buf = CLWBuffer<float>::Create(g_context, CL_MEM_READ_ONLY, 3 * _w * _h, dv);
 }
 
-Buffer* GeneratePrimaryRays()
+CLWBuffer<ray> GeneratePrimaryRays()
 {
     //prepare camera buf
     Camera cam;
     cam.forward = {0.f, 0.f, 1.f };
     cam.up = { 0.f, 1.f, 0.f };
-    cam.p = { 0.f, 1.f, 3.f };
+    cam.p = { 0.f, 1.f, 5.f };
     cam.zcap = { 1.f, 1000.f };
     CLWBuffer<Camera> camera_buf = CLWBuffer<Camera>::Create(g_context, CL_MEM_READ_ONLY, 1, &cam);
 
@@ -146,50 +149,15 @@ Buffer* GeneratePrimaryRays()
     g_context.Launch2D(0, gs, ls, kernel);
     g_context.Flush(0);
 
-    return CreateFromOpenClBuffer(g_api, ray_buf);
+    return ray_buf;
 }
 
-Buffer* GenerateShadowRays(CLWBuffer<Intersection> & isect, const float3& light)
+CLWBuffer<float> accum;
+int samples = 0;
+
+void Shading(CLWBuffer<unsigned char> out_buff, const CLWBuffer<Intersection> &isect, CLWBuffer<float>& col_buff, CLWBuffer<ray>& ray_buff, const int smps)
 {
-    //prepare buffers
-    CLWBuffer<ray> ray_buf = CLWBuffer<ray>::Create(g_context, CL_MEM_READ_WRITE, g_window_width*g_window_height);
-    cl_float4 light_cl = { light.x,
-                            light.y,
-                            light.z,
-                            light.w };
-    
     //run kernel
-    CLWKernel kernel = g_program.GetKernel("GenerateShadowRays");
-    kernel.SetArg(0, ray_buf);
-    kernel.SetArg(1, g_positions);
-    kernel.SetArg(2, g_normals);
-    kernel.SetArg(3, g_indices);
-    kernel.SetArg(4, g_colors);
-    kernel.SetArg(5, g_indent);
-    kernel.SetArg(6, isect);
-    kernel.SetArg(7, light_cl);
-    kernel.SetArg(8, g_window_width);
-    kernel.SetArg(9, g_window_height);
-
-    // Run generation kernel
-    size_t gs[] = { static_cast<size_t>((g_window_width + 7) / 8 * 8), static_cast<size_t>((g_window_height + 7) / 8 * 8) };
-    size_t ls[] = { 8, 8 };
-    g_context.Launch2D(0, gs, ls, kernel);
-    g_context.Flush(0);
-
-    return CreateFromOpenClBuffer(g_api, ray_buf);
-}
-
-Buffer* Shading(const CLWBuffer<Intersection> &isect, const CLWBuffer<int> &occluds, const float3& light)
-{
-    //pass data to buffers
-    CLWBuffer<unsigned char> out_buff = CLWBuffer<unsigned char>::Create(g_context, CL_MEM_READ_ONLY, 4*g_window_width*g_window_height);
-    cl_float4 light_cl = { light.x,
-                            light.y,
-                            light.z,
-                            light.w };
-    //run kernel
-    CLWBuffer<ray> ray_buf = CLWBuffer<ray>::Create(g_context, CL_MEM_READ_WRITE, g_window_width*g_window_height);
     CLWKernel kernel = g_program.GetKernel("Shading");
     kernel.SetArg(0, g_positions);
     kernel.SetArg(1, g_normals);
@@ -197,20 +165,25 @@ Buffer* Shading(const CLWBuffer<Intersection> &isect, const CLWBuffer<int> &occl
     kernel.SetArg(3, g_colors);
     kernel.SetArg(4, g_indent);
     kernel.SetArg(5, isect);
-    kernel.SetArg(6, occluds);
-    kernel.SetArg(7, light_cl);
-    kernel.SetArg(8, g_window_width);
-    kernel.SetArg(9, g_window_height);
-    kernel.SetArg(10, out_buff);
+    kernel.SetArg(6, 1);
+    kernel.SetArg(7, g_window_width);
+    kernel.SetArg(8, g_window_height);
+    kernel.SetArg(9, out_buff);
+    kernel.SetArg(10, col_buff);
+    kernel.SetArg(11, ray_buff);
+    kernel.SetArg(12, cl_int(rand() % RAND_MAX));
+    kernel.SetArg(13, accum);
+    kernel.SetArg(14, smps);
+	kernel.SetArg(15, bg_buf);
 
     // Run generation kernel
     size_t gs[] = { static_cast<size_t>((g_window_width + 7) / 8 * 8), static_cast<size_t>((g_window_height + 7) / 8 * 8) };
     size_t ls[] = { 8, 8 };
     g_context.Launch2D(0, gs, ls, kernel);
     g_context.Flush(0);
-
-    return CreateFromOpenClBuffer(g_api, out_buff);
 }
+
+void Trace();
 
 void DrawScene()
 {
@@ -241,7 +214,7 @@ void DrawScene()
     glEnableVertexAttribArray(position_attr);
     glEnableVertexAttribArray(texcoord_attr);
 
-    // draw rectanle
+    // draw rectangle
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 
     glDisableVertexAttribArray(texcoord_attr);
@@ -252,6 +225,9 @@ void DrawScene()
 
     glFinish();
     glutSwapBuffers();
+    glutPostRedisplay();
+
+    Trace();
 }
 
 void InitGl()
@@ -325,6 +301,67 @@ void InitCl()
     const char* kBuildopts(" -cl-mad-enable -cl-fast-relaxed-math -cl-std=CL1.2 -I . ");
 
     g_program = CLWProgram::CreateFromFile("kernel.cl", kBuildopts, g_context);
+
+    float* zeros = new float[3*g_window_width*g_window_height]{};
+    accum = CLWBuffer<float>::Create(g_context, CL_MEM_READ_WRITE, 3*g_window_width*g_window_height, zeros);
+    delete[](zeros);
+}
+
+void Trace() {
+    const int k_raypack_size = g_window_height * g_window_width;
+    // Prepare rays. One for each texture pixel.
+    CLWBuffer<ray> ray_buffer_cl = GeneratePrimaryRays();
+    // Intersection data
+    CLWBuffer<Intersection> isect_buffer_cl = CLWBuffer<Intersection>::Create(g_context, CL_MEM_READ_WRITE, g_window_width*g_window_height);
+    Buffer* isect_buffer = CreateFromOpenClBuffer(g_api, isect_buffer_cl);
+	Buffer* ray_buffer = CreateFromOpenClBuffer(g_api, ray_buffer_cl);
+    
+    // Intersection
+    g_api->QueryIntersection(ray_buffer, k_raypack_size, isect_buffer, nullptr, nullptr);
+
+    // Point light position
+    float3 light = { -0.01f, 1.85f, 0.1f };
+
+    float* zeros = new float[4*g_window_width*g_window_height]{};
+    CLWBuffer<unsigned char> out_buff = CLWBuffer<unsigned char>::Create(g_context, CL_MEM_WRITE_ONLY, 4*g_window_width*g_window_height, zeros);
+    
+    CLWBuffer<float> col_buff = CLWBuffer<float>::Create(g_context, CL_MEM_READ_WRITE, 4*g_window_width*g_window_height, zeros);
+    
+    delete[](zeros);
+
+    // Shading
+	Event* e = nullptr;
+
+	//*
+    for (int a = 0; a < 2; a++) {
+        Shading(out_buff, isect_buffer_cl, col_buff, ray_buffer_cl, 1+samples);
+		delete(ray_buffer);
+		ray_buffer = CreateFromOpenClBuffer(g_api, ray_buffer_cl);
+        g_api->QueryIntersection(ray_buffer, k_raypack_size, isect_buffer, nullptr, &e);
+		e->Wait();
+    }
+    Shading(out_buff, isect_buffer_cl, col_buff, ray_buffer_cl, ++samples);
+	//*/
+
+	//Shading(out_buff, isect_buffer_cl, light, col_buff, ray_buffer_cl, 1, ++samples);
+	delete(ray_buffer);
+
+    //Buffer* tex_buf = CreateFromOpenClBuffer(g_api, out_buff);
+    
+    // Get image data
+    //g_api->MapBuffer(tex_buf, kMapRead, 0, 4 * k_raypack_size * sizeof(unsigned char), (void**)&pixels, &e);
+    //e->Wait();
+	void* pixels = MapCLWBuffer(out_buff, 4 * k_raypack_size);
+
+    // Update texture data
+    glBindTexture(GL_TEXTURE_2D, g_texture);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, g_window_width, g_window_height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    glBindTexture(GL_TEXTURE_2D, NULL);
+
+	//g_api->UnmapBuffer(tex_buf, pixels, nullptr);
+	UnmapCLWBuffer(out_buff, pixels);
+
+	delete(isect_buffer);
 }
 
 int main(int argc, char* argv[])
@@ -334,14 +371,13 @@ int main(int argc, char* argv[])
     glutInitWindowSize(g_window_width, g_window_height);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow("TutorialCornellBoxShadow");
-#ifndef __APPLE__
+
     GLenum err = glewInit();
     if (err != GLEW_OK)
     {
         std::cout << "GLEW initialization failed\n";
         return -1;
     }
-#endif
     // Prepare rectangle for drawing texture
     // rendered using intersection results
     InitGl();
@@ -352,18 +388,18 @@ int main(int argc, char* argv[])
     InitData();
 
     // Create api using already exist opencl context
-    cl_device_id id = g_context.GetDevice(0).GetID();
-    cl_command_queue queue = g_context.GetCommandQueue(0);
+    id = g_context.GetDevice(0).GetID();
+    queue = g_context.GetCommandQueue(0);
 
     // Create intersection API
-    g_api = RadeonRays::CreateFromOpenClContext(g_context, id, queue);
-    
+	g_api = RadeonRays::CreateFromOpenClContext(g_context, id, queue);
+
     // Adding meshes to tracing scene
     for (int id = 0; id < g_objshapes.size(); ++id)
     {
         shape_t& objshape = g_objshapes[id];
         float* vertdata = objshape.mesh.positions.data();
-        int nvert = objshape.mesh.positions.size();
+        int nvert = objshape.mesh.positions.size() / 3;
         int* indices = objshape.mesh.indices.data();
         int nfaces = objshape.mesh.indices.size() / 3;
         Shape* shape = g_api->CreateMesh(vertdata, nvert, 3 * sizeof(float), indices, 0, nullptr, nfaces);
@@ -375,43 +411,7 @@ int main(int argc, char* argv[])
     // Commit scene changes
     g_api->Commit();
 
-    const int k_raypack_size = g_window_height * g_window_width;
-    
-    // Prepare rays. One for each texture pixel.
-    Buffer* ray_buffer = GeneratePrimaryRays();
-    // Intersection data
-    CLWBuffer<Intersection> isect_buffer_cl = CLWBuffer<Intersection>::Create(g_context, CL_MEM_READ_WRITE, g_window_width*g_window_height);
-    Buffer* isect_buffer = CreateFromOpenClBuffer(g_api, isect_buffer_cl);
-    
-    // Intersection
-    g_api->QueryIntersection(ray_buffer, k_raypack_size, isect_buffer, nullptr, nullptr);
-
-    // Point light position
-    float3 light = { -0.01f, 1.85f, 0.1f };
-    
-    // Shadow rays
-    Buffer* shadow_rays_buffer = GenerateShadowRays(isect_buffer_cl, light);
-    CLWBuffer<int> occl_buffer_cl = CLWBuffer<int>::Create(g_context, CL_MEM_READ_WRITE, g_window_width*g_window_height);
-    Buffer* occl_buffer = CreateFromOpenClBuffer(g_api, occl_buffer_cl);
-
-    // Occlusion
-    g_api->QueryOcclusion(shadow_rays_buffer, k_raypack_size, occl_buffer, nullptr, nullptr);
-    
-    // Shading
-    Buffer* tex_buf = Shading(isect_buffer_cl, occl_buffer_cl, light);
-    
-    // Get image data
-    std::vector<unsigned char> tex_data(k_raypack_size * 4);
-    unsigned char* pixels = nullptr;
-    Event* e = nullptr;
-    g_api->MapBuffer(tex_buf, kMapRead, 0, 4 * k_raypack_size * sizeof(unsigned char), (void**)&pixels, &e);
-    e->Wait();
-    memcpy(tex_data.data(), pixels, 4 * k_raypack_size * sizeof(unsigned char));
-
-    // Update texture data
-    glBindTexture(GL_TEXTURE_2D, g_texture);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, g_window_width, g_window_height, GL_RGBA, GL_UNSIGNED_BYTE, tex_data.data());
-    glBindTexture(GL_TEXTURE_2D, NULL);
+    Trace();
 
     // Start the main loop
     glutDisplayFunc(DrawScene);

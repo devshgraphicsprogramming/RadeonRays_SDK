@@ -80,6 +80,21 @@ float4 ConvertFromBarycentric(__global const float* vec,
     return a * (1 - uvwt->x - uvwt->y) + b * uvwt->x + c * uvwt->y;
 }
 
+
+static uint Rand(uint rnd) {
+	rnd ^= rnd << 13;
+	rnd ^= rnd >> 17;
+	rnd ^= rnd << 5;
+	return rnd;
+}
+
+static float Randf(uint* r) {
+	*r = Rand(*r);
+	return 0.0001f*(*r % 10000);
+}
+
+
+
 __kernel void GeneratePerspectiveRays(__global Ray* rays,
                                     __global const Camera* cam,
                                     int width,
@@ -167,12 +182,18 @@ __kernel void Shading(//scene
                 __global int* indents,
                 //intersection
                 __global Intersection* isect,
-                __global const int* occl,
+                //__global const int* occl,
                 //light pos
+                float weight,
                 float4 light,
                 int width,
                 int height,
-                __global unsigned char* out)
+                __global unsigned char* out,
+                __global float4* ocol,
+                __global Ray* ray,
+                int rng,
+                __global float* accum,
+                int smps)
 {
     int2 globalid;
     globalid.x  = get_global_id(0);
@@ -185,7 +206,7 @@ __kernel void Shading(//scene
         int shape_id = isect[k].shapeid;
         int prim_id = isect[k].primid;
 
-        if (shape_id != -1 && prim_id != -1 && occl[k] == -1)
+        if (shape_id != -1 && prim_id != -1)// && occl[k] == -1)
         {
             // Calculate position and normal of the intersection point
             int ind = indents[shape_id];
@@ -207,10 +228,46 @@ __kernel void Shading(//scene
             if (dot_prod > 0)
                 col += dot_prod * diff_col;
 
-            out[k * 4] = col.x * 255;
-            out[k * 4 + 1] = col.y * 255;
-            out[k * 4 + 2] = col.z * 255;
+            if (ocol[k].a < 0.5f)
+                ocol[k].rgb = col.rgb;
+            else
+                ocol[k].rgb *= col.rgb;
+            ocol[k].a = 1;
+            col.rgb = ocol[k].rgb;
+            accum[k * 3] += weight*col.x * 255;
+            accum[k * 3 + 1] += weight*col.y * 255;
+            accum[k * 3 + 2] += weight*col.z * 255;
+
+            if (smps > 0) {
+                accum[k * 3] += weight*col.x * 255;
+                accum[k * 3 + 1] += weight*col.y * 255;
+                accum[k * 3 + 2] += weight*col.z * 255;
+                out[k * 4] = accum[k * 3] / smps;
+                out[k * 4 + 1] = accum[k * 3 + 1] / smps;
+                out[k * 4 + 2] = accum[k * 3 + 2] / smps;
+            }
+            else {
+                out[k * 4] = -accum[k * 3] / smps;
+                out[k * 4 + 1] = -accum[k * 3 + 1] / smps;
+                out[k * 4 + 2] = -accum[k * 3 + 2] / smps;
+            }
             out[k * 4 + 3] = 255;
+
+            float3 ro = ray[k].o.xyz;
+            float3 rd = ray[k].d.xyz;
+
+            norm.xyz = rd - 2 * dot(rd, norm.xyz) / (norm.x*norm.x + norm.y*norm.y + norm.z*norm.z) * norm.xyz;
+
+            uint rnd = uint(k + rng);
+
+        	float r1 = Randf(&rnd);
+        	float r2 = Randf(&rnd);
+        	float r3 = Randf(&rnd);
+        	float3 nrm = normalize((float3)(r1*2-1, r2*2-1, r3*2-1));
+        	if (dot(nrm, norm.xyz) < 0) nrm *= -1.f;
+        	ray[k].d.xyz = nrm;
+            pos.xyz += nrm * 0.0001f;
+            ray[k].o.xyz = pos.xyz;
         }
     }
 }
