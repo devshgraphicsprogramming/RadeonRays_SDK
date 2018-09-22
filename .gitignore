@@ -27,6 +27,7 @@ Bin/Release/x64/App64.exe
 *.so
 
 *.cmake
+CMakeCache.txt
 CMakeFiles/
 CMakeCache/
 
