@@ -20,6 +20,7 @@ Bin/Release/x64/App64.exe
 *.db
 *.d
 
+build/
 *.o
 
 *.a
