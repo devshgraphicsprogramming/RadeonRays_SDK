@@ -1,9 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -13,13 +25,17 @@
       <Configuration>MinSizeRel</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="RelWithDebInfo|x64">
       <Configuration>RelWithDebInfo</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5F6FADD8-100B-3548-BE41-B0B1310C0679}</ProjectGuid>
+    <ProjectGuid>{8F5F639C-3301-346E-9463-FC892E0DCC7F}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
@@ -32,7 +48,17 @@
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
@@ -42,7 +68,17 @@
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
@@ -57,11 +93,25 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
@@ -81,7 +131,27 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <Midl>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
@@ -101,11 +171,22 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Pua Kai\Documents\GitHub\radeonrays\CMakeFiles\8cd27b374fba7e98f9f1998004f2f41d\kernels_cl.h.rule">
+    <CustomBuild Include="C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\CMakeFiles\cf236f5d1f7d27f06e316b4f53e29354\kernels_cl.h.rule">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating RadeonRays OpenCL kernel cache</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating RadeonRays OpenCL kernel cache</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/kernels_cl.h"
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -113,12 +194,25 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/8cd27b374fba7e98f9f1998004f2f41d/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating RadeonRays OpenCL kernel cache</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating RadeonRays OpenCL kernel cache</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/kernels_cl.h"
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -126,12 +220,25 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/8cd27b374fba7e98f9f1998004f2f41d/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating RadeonRays OpenCL kernel cache</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Generating RadeonRays OpenCL kernel cache</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/kernels_cl.h"
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -139,12 +246,25 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/8cd27b374fba7e98f9f1998004f2f41d/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating RadeonRays OpenCL kernel cache</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Generating RadeonRays OpenCL kernel cache</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/kernels_cl.h"
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -152,14 +272,29 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/8cd27b374fba7e98f9f1998004f2f41d/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Users\Pua Kai\AppData\Local\Programs\Python\Python36-32\python.exe" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/Tools/scripts/stringify.py" "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/" .cl opencl &gt; "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/kernels_cl.h"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/cf236f5d1f7d27f06e316b4f53e29354/kernels_cl.h.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Pua Kai\Documents\GitHub\radeonrays\CMakeFiles\cbeaeaaa00448bedeb7e90da625e31bd\RadeonRaysKernelCache.rule">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></Message>
+    <CustomBuild Include="C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\CMakeFiles\c3a4d5c5656df32d2b1a5d7d0d178d3f\RadeonRaysKernelCache.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -167,10 +302,23 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/cbeaeaaa00448bedeb7e90da625e31bd/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></Message>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -178,10 +326,23 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/cbeaeaaa00448bedeb7e90da625e31bd/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'"></Message>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+      </Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+      </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -189,10 +350,23 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/cbeaeaaa00448bedeb7e90da625e31bd/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'"></Message>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+      </Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+      </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -200,16 +374,27 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/CMakeFiles/cbeaeaaa00448bedeb7e90da625e31bd/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/CMakeFiles/c3a4d5c5656df32d2b1a5d7d0d178d3f/RadeonRaysKernelCache.rule;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\kernels_cl.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+    <CustomBuild Include="C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -217,12 +402,25 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -230,12 +428,25 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -243,12 +454,25 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -256,17 +480,29 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Pua Kai/Documents/GitHub/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-HC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" "-BC:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays" --check-stamp-file "C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/Pua Kai/Documents/GitHub/mdvis/radeonrays/RadeonRays/src/kernels/CL/CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\Pua Kai\Documents\GitHub\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache" />
+    <None Include="C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\RadeonRays\src\kernels\CL\CMakeFiles\RadeonRaysKernelCache" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\Pua Kai\Documents\GitHub\radeonrays\ZERO_CHECK.vcxproj">
-      <Project>{52D4C3DC-B793-3E87-AC53-096583784D9C}</Project>
+    <ProjectReference Include="C:\Users\Pua Kai\Documents\GitHub\mdvis\radeonrays\ZERO_CHECK.vcxproj">
+      <Project>{855EB0E7-1E8A-3FE4-BF53-C77900A529A4}</Project>
       <Name>ZERO_CHECK</Name>
     </ProjectReference>
   </ItemGroup>
