@@ -311,10 +311,10 @@ void Trace() {
     const int k_raypack_size = g_window_height * g_window_width;
     // Prepare rays. One for each texture pixel.
     CLWBuffer<ray> ray_buffer_cl = GeneratePrimaryRays();
+	Buffer* ray_buffer = CreateFromOpenClBuffer(g_api, ray_buffer_cl);
     // Intersection data
     CLWBuffer<Intersection> isect_buffer_cl = CLWBuffer<Intersection>::Create(g_context, CL_MEM_READ_WRITE, g_window_width*g_window_height);
     Buffer* isect_buffer = CreateFromOpenClBuffer(g_api, isect_buffer_cl);
-	Buffer* ray_buffer = CreateFromOpenClBuffer(g_api, ray_buffer_cl);
     
     // Intersection
     g_api->QueryIntersection(ray_buffer, k_raypack_size, isect_buffer, nullptr, nullptr);
