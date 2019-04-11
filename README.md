@@ -24,7 +24,7 @@ Do this instead of the official guide
 
 `cd build`
 
-`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> ..` 
+`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> -DRR_EMBED_KERNELS=ON ..` 
 
 `make`
 
@@ -36,6 +36,6 @@ Do this instead of the official guide
 
 `cd build`
 
-`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> ..`
+`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> -DRR_EMBED_KERNELS=ON ..`
 
 `make`
