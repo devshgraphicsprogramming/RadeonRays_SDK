@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 
 project(RadeonRaysSDK CXX)
 
-option(RR_EMBED_KERNELS "Embed CL kernels into binary module" OFF)
+option(RR_EMBED_KERNELS "Embed CL kernels into binary module" ON)
 option(RR_ALLOW_CPU_DEVICES "Allows CPU Devices" OFF)
 option(RR_USE_OPENCL "Use OpenCL for GPU hit testing" ON)
 option(RR_USE_EMBREE "Use Intel(R) Embree for CPU hit testing" OFF)

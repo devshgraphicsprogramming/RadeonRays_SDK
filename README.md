@@ -12,7 +12,7 @@ Set environmental variable.  GPU_MAX_ALLOC_PERCENT = 100. This is necessary to a
 
 Do this instead of the official guide
 
-`cmake -G "Visual Studio 15 2017 Win64" -DRR_EMBED_KERNELS=ON`
+`cmake -G "Visual Studio 15 2017 Win64"`
 
 `cmake --build . --config <Release or Debug>`
 
@@ -24,7 +24,7 @@ Do this instead of the official guide
 
 `cd build`
 
-`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> -DRR_EMBED_KERNELS=ON ..` 
+`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> ..` 
 
 `make`
 
@@ -36,6 +36,6 @@ Do this instead of the official guide
 
 `cd build`
 
-`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> -DRR_EMBED_KERNELS=ON ..`
+`cmake -DCMAKE_BUILD_TYPE=<Release or Debug> ..`
 
 `make`
