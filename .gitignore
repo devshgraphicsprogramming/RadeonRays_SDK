@@ -20,6 +20,8 @@ Bin/Release/x64/App64.exe
 *.opendb
 *.db
 *.d
+*.sln
+*.vcxproj
 
 build/
 *.o
