@@ -225,10 +225,14 @@ namespace RadeonRays
         // Create an instance of a shape with its own transform (set via Shape interface).
         // The call is blocking, so the returned value is ready upon return.
         virtual Shape* CreateInstance(Shape const* shape) const = 0;
+        // *EDIT* Preallocate shape container
+        virtual void AllocShapes(size_t const size) {}
         // Delete the shape (to simplify DLL boundary crossing
         virtual void DeleteShape(Shape const* shape) = 0;
         // Attach shape to participate in intersection process
         virtual void AttachShape(Shape const* shape) = 0;
+        // *EDIT* Attach shape without error checking
+        virtual void AttachShapeUnchecked(Shape const* shape) { AttachShape(shape); }
         // Detach shape, i.e. it is not going to be considered part of the scene anymore
         virtual void DetachShape(Shape const* shape) = 0;
         // Detach all objects

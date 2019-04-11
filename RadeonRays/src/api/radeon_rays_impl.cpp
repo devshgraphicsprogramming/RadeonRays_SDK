@@ -87,6 +87,11 @@ namespace RadeonRays
         return instance;
     }
 
+    void IntersectionApiImpl::AllocShapes(size_t const size)
+    {
+        world_.ReserveShapes(size);
+    }
+
     void IntersectionApiImpl::DeleteShape(Shape const* shape)
     {
         delete shape;
@@ -95,6 +100,11 @@ namespace RadeonRays
     void IntersectionApiImpl::AttachShape(Shape const* shape)
     {
         world_.AttachShape(shape);
+    }
+
+    void IntersectionApiImpl::AttachShapeUnchecked(Shape const* shape)
+    {
+        world_.AttachShapeUnchecked(shape);
     }
 
     void IntersectionApiImpl::DetachShape(Shape const* shape)

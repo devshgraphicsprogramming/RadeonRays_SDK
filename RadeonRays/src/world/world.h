@@ -42,8 +42,12 @@ namespace RadeonRays
         World() = default;
         //
         virtual ~World() = default;
+        // *EDIT* Preallocate the shapes container
+        void ReserveShapes(size_t const size);
         // Attach the shape updating all the flags
         void AttachShape(Shape const* shape);
+        // *EDIT* Attach the shape updating all the flags, without checking if shape already exists.
+        void AttachShapeUnchecked(Shape const* shape);
         // Detach the shape 
         void DetachShape(Shape const* shape);
         // Detach all

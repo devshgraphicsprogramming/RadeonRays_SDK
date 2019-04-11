@@ -65,10 +65,14 @@ namespace RadeonRays
         // Create an instance of a shape with its own transform (set via Shape interface).
         // The call is blocking, so the returned value is ready upon return.
         Shape* CreateInstance(Shape const* shape) const override;
+        // *EDIT* Preallocate shape container
+        void AllocShapes(size_t const size) override;
         // Delete the shape (to simplify DLL boundary crossing
         void DeleteShape(Shape const* shape) override;
         // Attach shape to participate in intersection process
         void AttachShape(Shape const* shape) override;
+        // *EDIT* Attach shape without error checking
+        void AttachShapeUnchecked(Shape const* shape) override;
         // Detach shape, i.e. it is not going to be considered part of the scene anymore
         void DetachShape(Shape const* shape) override;
         // Detach all objects

@@ -25,6 +25,11 @@ THE SOFTWARE.
 
 namespace RadeonRays
 {
+    void World::ReserveShapes(size_t const size)
+    {
+        shapes_.reserve(size);
+    }
+
     void World::AttachShape(Shape const* shape)
     {
         if (std::find(shapes_.cbegin(), shapes_.cend(), shape) == shapes_.cend())
@@ -32,6 +37,12 @@ namespace RadeonRays
             shapes_.push_back(shape);
             has_changed_ = true;
         }
+    }
+
+    void World::AttachShapeUnchecked(Shape const* shape)
+    {
+        shapes_.push_back(shape);
+        has_changed_ = true;
     }
 
     void World::DetachShape(Shape const* shape)
