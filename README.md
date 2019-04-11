@@ -14,7 +14,7 @@ Do this instead of the official guide
 
 `cmake -G "Visual Studio 15 2017 Win64"`
 
-`cmake --build . --config <Release or Debug>`
+`cmake --build . --config Release`
 
 ### OSX
 
