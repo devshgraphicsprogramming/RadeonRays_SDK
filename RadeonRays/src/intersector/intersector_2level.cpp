@@ -210,9 +210,11 @@ namespace RadeonRays
             // Copy the shapes here to be able to partition them and handle more efficiently
             // #22: we need to be able to handle instances whos base shapes are not present 
             // in the scene, so we have to add them manually here.
-            std::vector<Shape const*> shapes;
-            std::set<Shape const*> shapes_disabled;
+			// *EDIT* Base shapes are are always attached to speed up building
+            std::vector<Shape const*> shapes = world.shapes_;
+            //std::set<Shape const*> shapes_disabled;
 
+			/*
             for (auto s : world.shapes_)
             {
                 auto shapeimpl = static_cast<ShapeImpl const*>(s);
@@ -234,6 +236,7 @@ namespace RadeonRays
 
                 shapes.push_back(s);
             }
+			*/
 
             // Now partition the range into meshes and instances
             auto firstinst = std::partition(shapes.begin(), shapes.end(), [&](Shape const* shape)
@@ -455,6 +458,8 @@ namespace RadeonRays
                 // For disabled shapes force mask to zero since these shapes 
                 // present only virtually (they have not been added to the scene)
                 // and we need to skip them while doing traversal.
+				// *EDIT* There are no disabled shapes
+				/*
                 if (shapes_disabled.find(shapeimpl) == shapes_disabled.cend())
                 {
                     m_cpudata->shapedata[i].shapeDisabled = 0;
@@ -463,6 +468,8 @@ namespace RadeonRays
                 {
                     m_cpudata->shapedata[i].shapeDisabled = 1;
                 }
+				*/
+				m_cpudata->shapedata[i].shapeDisabled = 0;
 
                 shapeimpl->GetTransform(m, m_cpudata->shapedata[i].minv);
 
@@ -500,9 +507,11 @@ namespace RadeonRays
             // Copy the shapes here to be able to partition them and handle more efficiently
             // #22: we need to be able to handle instances whos base shapes are not present 
             // in the scene, so we have to add them manually here.
-            std::vector<Shape const*> shapes;
-            std::set<Shape const*> shapes_disabled;
+			// *EDIT* Base shapes are are always attached to speed up building
+            std::vector<Shape const*> shapes = world.shapes_;
+            //std::set<Shape const*> shapes_disabled;
 
+			/*
             for (auto s : world.shapes_)
             {
                 auto shapeimpl = static_cast<ShapeImpl const*>(s);
@@ -524,6 +533,7 @@ namespace RadeonRays
 
                 shapes.push_back(s);
             }
+			*/
 
             // Now partition the range into meshes and instances
             auto firstinst = std::partition(shapes.begin(), shapes.end(), [&](Shape const* shape)
@@ -618,6 +628,8 @@ namespace RadeonRays
                 // For disabled shapes force mask to zero since these shapes 
                 // present only virtually (they have not been added to the scene)
                 // and we need to skip them while doing traversal.
+				// *EDIT* There are no disabled shapes
+				/*
                 if (shapes_disabled.find(shapeimpl) == shapes_disabled.cend())
                 {
                     m_cpudata->shapedata[i].shapeDisabled = 0;
@@ -626,6 +638,8 @@ namespace RadeonRays
                 {
                     m_cpudata->shapedata[i].shapeDisabled = 1;
                 }
+				*/
+				m_cpudata->shapedata[i].shapeDisabled = 0;
 
                 shapeimpl->GetTransform(m, m_cpudata->shapedata[i].minv);
 
