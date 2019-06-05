@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include <cassert>
 
 #ifdef __APPLE__
-#include <OpenCL/OpenCL.h>
+#include <OpenCL/opencl.h>
 #include <OpenGL/OpenGL.h>
 #else
 #include <CL/cl.h>

@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include "device.h"
 
 #ifdef __APPLE__
-#include <OpenCL/OpenCL.h>
+#include <OpenCL/opencl.h>
 #else
 #include <CL/cl.h>
 #endif

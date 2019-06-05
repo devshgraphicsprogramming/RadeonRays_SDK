@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 #ifdef __APPLE__
 #define STDCALL
-#include <OpenCL/OpenCL.h>
+#include <OpenCL/opencl.h>
 #elif WIN32
 #define STDCALL __stdcall
 #include <CL/cl.h>

@@ -38,7 +38,7 @@ using namespace tinyobj;
 #include <chrono>
 
 #ifdef __APPLE__
-#include <OpenCL/OpenCL.h>
+#include <OpenCL/opencl.h>
 #else
 #include <CL/cl.h>
 #endif
