@@ -33,8 +33,6 @@ THE SOFTWARE.
 #include "executable.h"
 #include <algorithm>
 
-#include "../../Calc/src/device_clw.h"
-
 // Preferred work group size for Radeon devices
 static int const kWorkGroupSize = 64;
 
@@ -61,8 +59,6 @@ namespace RadeonRays
             , vertices(nullptr)
             , faces(nullptr)
             , executable(nullptr)
-            , isect_func(nullptr)
-            , occlude_func(nullptr)
         {
         }
 
@@ -127,6 +123,11 @@ namespace RadeonRays
         }
 #endif
 #endif
+
+        assert(m_gpudata->executable);
+
+        m_gpudata->isect_func = m_gpudata->executable->CreateFunction("intersect_main");
+        m_gpudata->occlude_func = m_gpudata->executable->CreateFunction("occluded_main");
     }
 
     void IntersectorSkipLinks::Process(World const& world)
@@ -446,20 +447,4 @@ namespace RadeonRays
         m_device->Execute(func, queueidx, globalsize, localsize, event);
     }
 
-    void* IntersectorSkipLinks::GetGpuData( IntersectionApi::GpuDataType type ) const
-    {
-        if (m_device->GetPlatform() == Calc::Platform::kOpenCL)
-        {
-            Calc::DeviceClw *clw = static_cast<Calc::DeviceClw*>(m_device);
-            switch(type)
-            {
-            case IntersectionApi::kGpuData_BvhBuffer     : return clw->GetNativeHandle(m_gpudata->bvh);
-            case IntersectionApi::kGpuData_VerticesBuffer: return clw->GetNativeHandle(m_gpudata->vertices);
-            case IntersectionApi::kGpuData_FacesBuffer   : return clw->GetNativeHandle(m_gpudata->faces);            
-            }            
-        }
-
-        return nullptr;            
-    }
-    
 }

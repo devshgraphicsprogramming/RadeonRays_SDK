@@ -335,11 +335,7 @@ namespace RadeonRays
         {
             m_intersector->QueryOcclusion(0, ray_buffer, numrays_buffer, maxrays, hit_buffer, e, nullptr);
         }
-    }
 
-    void* CalcIntersectionDevice::GetGpuData( IntersectionApi::GpuDataType type ) const
-    {
-        return m_intersector->GetGpuData(type);
     }
 
     CalcEventHolder* CalcIntersectionDevice::CreateEventHolder() const

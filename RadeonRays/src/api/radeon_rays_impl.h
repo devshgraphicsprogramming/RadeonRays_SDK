@@ -122,11 +122,6 @@ namespace RadeonRays
         void QueryOcclusion(Buffer const* rays, Buffer const* numrays, int maxrays, Buffer* hitresults, Event const* waitevent, Event** event) const override;
 
         /******************************************
-        Unity hack
-        ******************************************/
-        void *GetGpuData( GpuDataType type ) const override;
-        
-        /******************************************
         Utility
         ******************************************/
         // Set API global option: string
